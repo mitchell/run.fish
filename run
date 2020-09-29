@@ -4,6 +4,7 @@
 
 ### Config ###
 # Top-level configurations, like function prefixes and argument delimeters
+#
 set -g run_func_prefix 'run'
 set -g run_arg_delimeter ':'
 
@@ -12,28 +13,48 @@ set -g run_arg_delimeter ':'
 # Add, edit, and remove commands freely below.
 # To add a command simply create a function with this naming scheme: {run_func_prefix}_{name}.
 #
-function run_hello
+function run_hello -d 'Say hello to the world'
     echo 'hello, world!'
 end
 
-function run_hey -a name
+function run_hey -a name -d 'Say hey to someone specific'
     echo "hey, $name!"
 end
 
-function run_lang -a command
-    function lang_en
+function run_lang -a command -d 'Groups lang subcommands'
+    function lang_en -d 'Say hello in english'
         run_hello
     end
 
-    function lang_fr -a name
+    function lang_fr -a name -d 'Say hello the world or someone specific, in french'
         if test -n "$name"
-            echo "bounjour, $name!"
+            echo "bonjour, $name!"
         else
             echo 'bonjour, le monde!'
         end
     end
 
     execute_command 'lang' $command
+end
+
+### Default Commands ###
+# Below is a set of default commands, like help and commands. Give them a try by doing:
+# ./run help
+# ./run help:hello
+# ./run commands
+#
+function "$run_func_prefix"_commands -d 'List all available commands'
+    functions --names | grep $run_func_prefix'_' | string replace $run_func_prefix'_' ''
+end
+
+function "$run_func_prefix"_help -a command -d 'Print command definition'
+    if test -n "$command"
+        functions $run_func_prefix'_'$command
+    else
+        echo 'Here are the available commands:'
+        $run_func_prefix'_commands'
+        echo \n"To see a command's definition and description do `./run help$run_arg_delimeter{command}`"
+    end
 end
 
 ### Command Execution ###
@@ -65,6 +86,7 @@ function execute_command -a prefix command
         $func $args[2]
     else
         echo "$prefix command '$command' does not exist"
+        exit 1
     end
 end
 
