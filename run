@@ -25,22 +25,27 @@ function run_lang -a command
         run_hello
     end
 
-    function lang_fr
-        echo 'bonjour, le monde!'
+    function lang_fr -a name
+        if test -n "$name"
+            echo "bounjour, $name!"
+        else
+            echo 'bonjour, le monde!'
+        end
     end
 
     execute_command 'lang' $command
 end
 
 ### Command Execution ###
-# Do not edit, unless you want to alter how to script executes commands.
+# Do not edit, unless you want to alter how the script executes commands.
 #
-# This script can execute 1 or more commands like makefile. It can also receive 1 argument per
-# command in the following format: {name}{run_arg_delimeter}{argument}.
+# This script can execute 1 or more commands like make. It can also receive 1 argument per
+# command or subcommand in the following format: {name}{run_arg_delimeter}{argument}.
 #
 # Examples:
 # ./run hello
 # ./run hey:mitchell
+# ./run lang:fr:mitchell
 # ./run hello hey:mitchell lang:fr
 #
 function main
