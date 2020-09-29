@@ -1,0 +1,65 @@
+#!/usr/bin/env fish
+# This 'run script' serves as a central place to store frequently run commands for this project.
+
+### Config ###
+# Top-level configurations, like function prefixes and argument delimeters
+set -g run_func_prefix 'run'
+set -g run_arg_delimeter ':'
+
+
+### Commands ###
+# Add, edit, and remove commands freely below.
+# To add a command simply create a function with this naming scheme: run_{command}.
+#
+function run_hello
+    echo 'hello, world!'
+end
+
+function run_hey -a name
+    echo "hey, $name!"
+end
+
+function run_lang -a command
+    function lang_en
+        run_hello
+    end
+
+    function lang_fr
+        echo 'bonjour, le monde!'
+    end
+
+    execute_command 'lang' $command
+end
+
+### Command Execution ###
+# Do not edit, unless you want to alter how to script runs commands.
+#
+# This script can execute 1 or more commands like makefile. It can also receive 1 argument per
+# command in the following format: {command}.{argument}.
+#
+# Examples:
+# ./run hello
+# ./run hey:mitchell
+# ./run hello hey:mitchell lang:fr
+#
+function main
+    for command in $argv
+        set -l last_status $status
+        test $last_status -gt 0; and exit $last_status
+
+        execute_command $run_func_prefix $command
+    end
+end
+
+function execute_command -a prefix command
+    set -l args (string split --max 1 $run_arg_delimeter $command)
+    set -l func $prefix'_'$args[1]
+
+    if functions -q $func
+        $func $args[2]
+    else
+        echo "$prefix command '$command' does not exist"
+    end
+end
+
+main $argv
