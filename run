@@ -1,5 +1,6 @@
 #!/usr/bin/env fish
-# This 'run script' serves as a central place to store frequently run commands for this project.
+# This run(.fish) script serves as a central place to store frequently run commands for this project.
+# Source: https://github.com/mitchell/run.fish
 
 ### Config ###
 # Top-level configurations, like function prefixes and argument delimeters
@@ -9,7 +10,7 @@ set -g run_arg_delimeter ':'
 
 ### Commands ###
 # Add, edit, and remove commands freely below.
-# To add a command simply create a function with this naming scheme: run_{command}.
+# To add a command simply create a function with this naming scheme: {run_func_prefix}_{name}.
 #
 function run_hello
     echo 'hello, world!'
@@ -32,10 +33,10 @@ function run_lang -a command
 end
 
 ### Command Execution ###
-# Do not edit, unless you want to alter how to script runs commands.
+# Do not edit, unless you want to alter how to script executes commands.
 #
 # This script can execute 1 or more commands like makefile. It can also receive 1 argument per
-# command in the following format: {command}.{argument}.
+# command in the following format: {name}{run_arg_delimeter}{argument}.
 #
 # Examples:
 # ./run hello
