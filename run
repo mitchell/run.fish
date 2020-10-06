@@ -8,6 +8,13 @@
 set -g run_func_prefix 'run'
 set -g run_arg_delimeter ':'
 
+function define_aliases
+    alias run_h='run_hello'
+    alias run_l='run_lang'
+
+    alias lang_f='lang_fr'
+end
+
 
 ### Commands ###
 # Add, edit, and remove commands freely below.
@@ -38,7 +45,12 @@ function run_lang -a command -d 'Groups lang subcommands'
 end
 
 ### Default Commands ###
-# Below is a set of default commands, like help and commands. Give them a try by doing:
+# Do not edit, unless you want to alter how the default commands work.
+#
+# Below is a set of default commands, like help and commands. They introspect on any valid run
+# script.
+#
+# Examples:
 # ./run help
 # ./run help:hello
 # ./run commands
@@ -70,6 +82,8 @@ end
 # ./run hello hey:mitchell lang:fr
 #
 function main
+    define_aliases
+
     for command in $argv
         set -l last_status $status
         test $last_status -gt 0; and exit $last_status
