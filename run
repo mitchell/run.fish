@@ -1,6 +1,13 @@
 #!/usr/bin/env fish
 
-source ./run.fish
+set -g run_func_prefix 'run'
+
+if test -f ./run.fish
+    source ./run.fish
+else
+    echo 'No run.fish found in current directory. Please copy the template from https://github.com/mitchell/run.fish'
+    exit 1
+end
 
 function main
     define_aliases
@@ -9,11 +16,11 @@ function main
         set -l last_status $status
         test $last_status -gt 0; and exit $last_status
 
-        execute_command 'run' $command
+        execute_command $run_func_prefix $command
     end
 
     if test -z "$argv"
-        execute_command 'run' default
+        execute_command $run_func_prefix default
     end
 end
 
@@ -25,6 +32,8 @@ function execute_command -a prefix command
 
     if functions -q $func
         $func $args[2]
+    else if test -z "$command"
+        execute_command $prefix default
     else
         echo "$prefix command '$command' does not exist"
         exit 1
