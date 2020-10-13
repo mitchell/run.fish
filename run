@@ -1,86 +1,7 @@
 #!/usr/bin/env fish
-# This run(.fish) script serves as a central place to store frequently run commands for this project.
-# Source: https://github.com/mitchell/run.fish
 
-### Config ###
-# Top-level configurations, like function prefixes and argument delimeters
-#
-set -g run_func_prefix 'run'
-set -g run_arg_delimeter ':'
+source ./run.fish
 
-function define_aliases
-    alias run_h='run_hello'
-    alias run_l='run_lang'
-
-    alias lang_f='lang_fr'
-end
-
-
-### Commands ###
-# Add, edit, and remove commands freely below.
-# To add a command simply create a function with this naming scheme: {run_func_prefix}_{name}.
-#
-function run_hello -d 'Say hello to the world'
-    echo 'hello, world!'
-end
-
-function run_hey -a name -d 'Say hey to someone specific'
-    echo "hey, $name!"
-end
-
-function run_lang -a command -d 'Groups lang subcommands'
-    function lang_en -d 'Say hello in english'
-        run_hello
-    end
-
-    function lang_fr -a name -d 'Say hello the world or someone specific, in french'
-        if test -n "$name"
-            echo "bonjour, $name!"
-        else
-            echo 'bonjour, le monde!'
-        end
-    end
-
-    execute_command 'lang' $command
-end
-
-### Default Commands ###
-# Do not edit, unless you want to alter how the default commands work.
-#
-# Below is a set of default commands, like help and commands. They introspect on any valid run
-# script.
-#
-# Examples:
-# ./run help
-# ./run help:hello
-# ./run commands
-#
-function "$run_func_prefix"_commands -d 'List all available commands'
-    functions --names | grep $run_func_prefix'_' | string replace $run_func_prefix'_' ''
-end
-
-function "$run_func_prefix"_help -a command -d 'Print command definition'
-    if test -n "$command"
-        functions $run_func_prefix'_'$command
-    else
-        echo 'Here are the available commands:'
-        $run_func_prefix'_commands'
-        echo \n"To see a command's definition and description do `./run help$run_arg_delimeter{command}`"
-    end
-end
-
-### Command Execution ###
-# Do not edit, unless you want to alter how the script executes commands.
-#
-# This script can execute 1 or more commands like make. It can also receive 1 argument per
-# command or subcommand in the following format: {name}{run_arg_delimeter}{argument}.
-#
-# Examples:
-# ./run hello
-# ./run hey:mitchell
-# ./run lang:fr:mitchell
-# ./run hello hey:mitchell lang:fr
-#
 function main
     define_aliases
 
@@ -88,7 +9,11 @@ function main
         set -l last_status $status
         test $last_status -gt 0; and exit $last_status
 
-        execute_command $run_func_prefix $command
+        execute_command 'run' $command
+    end
+
+    if test -z "$argv"
+        execute_command 'run' default
     end
 end
 
@@ -96,11 +21,44 @@ function execute_command -a prefix command
     set -l args (string split --max 1 $run_arg_delimeter $command)
     set -l func $prefix'_'$args[1]
 
+    define_default_functions $prefix
+
     if functions -q $func
         $func $args[2]
     else
         echo "$prefix command '$command' does not exist"
         exit 1
+    end
+end
+
+function define_default_functions
+    set -g prefix $argv[1]
+
+    function "$prefix"_commands -d 'List all available commands'
+        set -l names (functions --names | grep $prefix'_')
+
+        for name in $names
+            set -l details (functions -D -v $name)
+            set -l description $details[5]
+            set -l short_name (string replace "$prefix"_ '' $name)
+
+            if test (string length $short_name) -ge 8
+                echo $short_name\t$description
+            else
+                echo $short_name\t\t$description
+            end
+        end
+    end
+
+    function "$prefix"_help -a command -d 'Print command definition'
+        if test -n "$command"
+            functions $prefix'_'$command
+        else
+            echo 'Here are the available commands:'\n
+            "$prefix"_commands
+            echo \n"To see a command's definition and description do `run help$run_arg_delimeter{command}`"
+            echo "To see a subcommand group's help menu do `run {command}$run_arg_delimeter""help`"
+        end
     end
 end
 
