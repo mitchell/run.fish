@@ -8,7 +8,13 @@
 set -g run_arg_delimeter ':'
 
 function define_aliases
-    alias run_default='run_install'
+    alias run_default='run_help'
+
+    alias run_i='run_install'
+    alias run_l='run_lint'
+    alias run_f='run_format'
+    alias run_h='run_hello'
+    alias hello_w='hello_world'
 end
 
 
