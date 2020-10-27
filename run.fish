@@ -3,25 +3,21 @@
 # Source: https://github.com/mitchell/run.fish
 
 ### Config ###
-# Top-level configurations, like the argument delimeter and aliases.
-#
+# Top-level configurations, like the argument delimeter and custom global variables.
+
 set -g run_arg_delimeter ':'
-
-function define_aliases
-    alias run_default='run_help'
-
-    alias run_i='run_install'
-    alias run_l='run_lint'
-    alias run_f='run_format'
-    alias run_h='run_hello'
-    alias hello_w='hello_world'
-end
-
 
 ### Commands ###
 # Add, edit, and remove commands freely below.
 # To add a command simply create a function with this naming scheme: {run_func_prefix}_{name}.
-#
+
+function run_default -a arg -d 'Display this help menu'
+    # This command will run in when you simply execute `run` in this repo.
+    # The default command is set to help by default.
+    # So you can omit this from your run.fish if you like that behavior.
+    run_help $arg
+end
+
 function run_install -a bin_path -d 'Install the run script to a bin folder'
     if test -z "$bin_path"
         if test -d ~/.local/bin
@@ -59,4 +55,8 @@ function run_hello -a command -d 'This is an example of a subgroup of commands'
     alias hello_default='hello_world'
 
     execute_command 'hello' $command # this command comes from the run script
+end
+
+function run_fails -d 'This command fails every time'
+    false
 end

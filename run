@@ -10,18 +10,12 @@ else
 end
 
 function main
-    alias $run_func_prefix\_default=$run_func_prefix\_help
-    define_aliases
-
     for command in $argv
-        set -l last_status $status
-        test $last_status -gt 0; and exit $last_status
-
-        execute_command $run_func_prefix $command
+        and execute_command $run_func_prefix $command
     end
 
-    if test -z "$argv"
-        execute_command $run_func_prefix default
+    and if test -z "$argv"
+        execute_command $run_func_prefix
     end
 end
 
@@ -31,10 +25,10 @@ function execute_command -a prefix command
 
     define_default_functions $prefix
 
-    if functions -q $func
-        $func $args[2]
-    else if test -z "$command"
+    if test -z "$command"
         execute_command $prefix default
+    else if functions -q $func
+        $func $args[2]
     else
         echo "$prefix command '$command' does not exist"
         exit 1
@@ -68,6 +62,12 @@ function define_default_functions
             _$prefix\_commands
             echo \n"To see a command's definition do `run help$run_arg_delimeter{command}`"
             echo "To see a subcommand group's help menu do `run {command}$run_arg_delimeter""help`"
+        end
+    end
+
+    if not functions -q $prefix\_default
+        function $prefix\_default -a arg -d 'Alias for help command'
+            $prefix\_help $arg
         end
     end
 end
