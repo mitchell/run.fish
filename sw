@@ -9,10 +9,10 @@ else
 end
 
 function main
-    run_command $cmd_func_prefix $argv
+    run_swim_command $cmd_func_prefix $argv
 end
 
-function run_command -a prefix
+function run_swim_command -a prefix
     argparse --ignore-unknown 'h/help' -- $argv
     set -l command $argv[2]
     set -l func $prefix\_$command
@@ -48,13 +48,13 @@ function define_included_functions -a prefix
             test -z "$command"; and continue
             set -l command (string trim "$command")
 
-            echo \n"Running '$command' ..."
-            run_command $prefix (string split ' ' $command)
+            echo "Running '$command' ..."
+            run_swim_command $prefix (string split ' ' $command)
         end
     end
 
     function _$prefix\_commands -V prefix -d 'List all available commands'
-        set -l names (functions --names | grep $prefix\_)
+        set -l names (functions --names | grep "^$prefix\_")
 
         for name in $names
             set -l details (functions -D -v $name)

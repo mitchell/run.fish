@@ -64,7 +64,7 @@ function swim_hello -d 'This is an example of a subgroup of commands'
 
     alias hello_default='hello_world'
 
-    run_command 'hello' $argv # this command comes from the sw script
+    run_swim_command 'hello' $argv # this command comes from the sw script
 end
 
 function swim_fails -d 'This command fails every time'
