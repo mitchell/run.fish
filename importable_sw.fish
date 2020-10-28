@@ -1,10 +1,3 @@
-#!/usr/bin/env fish
-set -g cmd_func_prefix 'swim'
-
-function main
-    run_swim_command $cmd_func_prefix $argv
-end
-
 function run_swim_command -a prefix
     argparse --ignore-unknown 'h/help' -- $argv
     set -l command $argv[2]
@@ -83,5 +76,3 @@ function define_included_functions -a prefix
         echo 'is-group'
     end
 end
-
-main $argv

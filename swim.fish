@@ -1,3 +1,6 @@
+##!/usr/bin/env fish
+# Uncomment this line and the last 2 lines of this file to enable running it like `./swim.fish`.
+#
 # This swim.fish script serves as a central place to store frequently run commands for this project.
 # Replace Commands section with your own command functions.
 # Source: https://github.com/mitchell/swim.fish
@@ -7,7 +10,6 @@
 # These are the currently configurable settings of the sw script.
 # Both contain their defaults and can be omitted from your swim.fish.
 set -g cmd_func_prefix 'swim' # Set the function prefix for defining tasks
-set -g task_arg_delimeter '.' # Set the argument delimeter for tasks
 
 # Commands
 
@@ -71,5 +73,5 @@ function swim_fails -d 'This command fails every time'
     false
 end
 
-# Uncomment the following to import the execution code for swim.fish, and run it like `./swim.fish`.
-# curl -fsS https://raw.githubusercontent.com/mitchell/swim.fish/master/importable_sw.fish | source
+#curl -fsS https://raw.githubusercontent.com/mitchell/swim.fish/master/importable_sw.fish | source
+#run_swim_command 'swim' $argv
