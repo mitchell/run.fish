@@ -70,3 +70,6 @@ end
 function swim_fails -d 'This command fails every time'
     false
 end
+
+# Uncomment the following to import the execution code for swim.fish, and run it like `./swim.fish`.
+# curl -fsS https://raw.githubusercontent.com/mitchell/swim.fish/master/importable_sw.fish | source
