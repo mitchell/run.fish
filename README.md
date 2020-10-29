@@ -5,14 +5,14 @@ your project's most frequently run commands. Think `make` or `npm run`.
 
 ## Table of Contents
 
-- [Getting Started](#swim-fish#getting-started)
-- [Install `sw`](#swim-fish#install-sw)
-- [Included Commands](#swim-fish#included-commands)
-- [Self-executable swim.fish](#swim-fish#self-executable-swim-fish)
+- [Getting Started](#getting-started)
+- [Install `sw`](#install-sw)
+- [Included Commands](#included-commands)
+- [Self-executable swim.fish](#self-executable-swimfish)
 
 ## Getting Started
 
-[*^ Back to Top ^*](#swim-fish)
+[*^ Back to Top ^*](#swimfish)
 
 The easiest way to get started is by copy this repository's `swim.fish` to your own project's root
 directory. Then replace this projects command functions with your own. They look like this:
@@ -29,7 +29,7 @@ The required prefix of `swim_` can be configured, by setting the `cmd_func_prefi
 
 ## Install `sw`
 
-[*^ Back to Top ^*](#swim-fish)
+[*^ Back to Top ^*](#swimfish)
 
 The only dependency is [fish itself](https://fishshell.com/).
 
@@ -41,7 +41,7 @@ then copying `sw` to your preferred location in your binpath, like `/usr/local/b
 
 ## Included Commands
 
-[*^ Back to Top ^*](#swim-fish)
+[*^ Back to Top ^*](#swimfish)
 
 The following commands are included.
 
@@ -60,7 +60,7 @@ The following commands are included.
 
 ## Self-executable swim.fish
 
-[*^ Back to Top ^*](#swim-fish)
+[*^ Back to Top ^*](#swimfish)
 
 If you wish to make your *swim.fish* file self-executable instead of installed `sw`. Then all you
 have to do is add
