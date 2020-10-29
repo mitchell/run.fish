@@ -74,4 +74,4 @@ function swim_fails -d 'This command fails every time'
 end
 
 #curl -fsS https://raw.githubusercontent.com/mitchell/swim.fish/master/importable_sw.fish | source
-#run_swim_command 'swim' $argv
+#run_swim_command $cmd_func_prefix $argv
