@@ -1,3 +1,22 @@
+function sw -d 'The fish-based project script runner'
+    argparse --ignore-unknown 'i-init' -- $argv
+    set -g cmd_func_prefix 'swim'
+
+    if test -n "$_flag_init"
+        curl -fsS https://raw.githubusercontent.com/mitchell/swim.fish/master/swim.fish.example >swim.fish
+        return
+    end
+
+    if test -f ./swim.fish
+        source ./swim.fish
+    else
+        echo 'No swim.fish found. Run `sw --init` make one.'
+        return 1
+    end
+
+    run_swim_command $cmd_func_prefix $argv
+end
+
 function run_swim_command -a prefix
     argparse --ignore-unknown 'h/help' -- $argv
     set -l command $argv[2]

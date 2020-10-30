@@ -1,14 +1,20 @@
 #!/usr/bin/env fish
-set -g cmd_func_prefix 'swim'
-
-if test -f ./swim.fish
-    source ./swim.fish
-else
-    echo 'No swim.fish found in current directory. Please copy the template from https://github.com/mitchell/swim.fish'
-    exit 1
-end
-
 function main
+    argparse --ignore-unknown 'i-init' -- $argv
+    set -g cmd_func_prefix 'swim'
+
+    if test -n "$_flag_init"
+        curl -fsS https://raw.githubusercontent.com/mitchell/swim.fish/master/swim.fish.example >swim.fish
+        return
+    end
+
+    if test -f ./swim.fish
+        source ./swim.fish
+    else
+        echo 'No swim.fish found. Run `sw --init` make one.'
+        return 1
+    end
+
     run_swim_command $cmd_func_prefix $argv
 end
 
