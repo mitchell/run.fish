@@ -44,11 +44,11 @@ function swim_install -d 'Install the sw script to a bin folder'
 end
 
 function swim_lint -d 'Lint fish scripts'
-    fish --no-execute ./sw ./swim.fish
+    fish --no-execute ./sw ./**.fish
 end
 
 function swim_format -d 'Format fish scripts'
-    fish_indent --write ./sw ./swim.fish
+    fish_indent --write ./sw ./**.fish
 end
 
 function swim_hello -d 'This is an example of a subgroup of commands'

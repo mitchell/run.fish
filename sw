@@ -41,7 +41,9 @@ function run_swim_command -a prefix
     else if functions -q $prefix\_default
         $prefix\_default $args
     else
-        echo "$prefix command '$command' does not exist"
+        echo "
+$prefix command '$command' does not exist
+Try 'help' command or -h/--help flags"
         return 127
     end
 end
@@ -51,11 +53,15 @@ function define_included_functions -a prefix
 
     function $prefix\_do -V prefix -d 'Perform a list of commands separated by commas'
         for command in (string split ',' "$argv")
-            test -z "$command"; and continue
+            if test -z "$command"
+                continue
+            end
+
             set -l command (string trim "$command")
 
             echo "Running '$command' ..."
             run_swim_command $prefix (string split ' ' $command)
+            or return $status
         end
     end
 
@@ -83,12 +89,6 @@ function define_included_functions -a prefix
             _$prefix\_commands
             echo \n"To see a command's definition do `run help {command}`"
             echo "To see a subcommand group's help menu do `run {command} help`"
-        end
-    end
-
-    if not functions -q $prefix\_default
-        function $prefix\_default -a arg -V prefix -d 'Alias for help command'
-            $prefix\_help $arg
         end
     end
 
